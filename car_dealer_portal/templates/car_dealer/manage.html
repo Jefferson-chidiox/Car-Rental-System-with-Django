@@ -1,0 +1,55 @@
+{% extends 'car_dealer/base.html' %} <!-- Extends the base template for the car dealer portal -->
+{% block content %} <!-- Begins the content block to override base content -->
+<div class="w3-bar w3-black w3-large">
+  <div class="w3-bar-item w3-left w3-black">Car Dealer Portal: {{user.username}}</div> <!-- Displays the username of the logged-in car dealer -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/logout/">Logout</a> <!-- Logout button -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/auth/">Home</a> <!-- Home link -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/order_list/">Orders</a> <!-- Orders link -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/manage_vehicles/">Vehicles</a> <!-- Manage vehicles link -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/history/">Earnings</a> <!-- Earnings link -->
+</div>
+
+{% if error_message %} <!-- Check if there is an error message -->
+    <div class="w3-panel w3-red w3-margin-top"> <!-- Display error message in a red panel -->
+        <p>{{ error_message }}</p> <!-- Display the error message -->
+    </div>
+{% endif %}
+
+<h3 class="w3-center" style="padding-top:30"><b>Posted Vehicles</b></h3> <!-- Header for posted vehicles section -->
+<div style="padding:18">
+    <table class="w3-table w3-striped w3-center"> <!-- Table for displaying posted vehicles -->
+        <tr>
+            <th style="padding:20;">Car Name</th> <!-- Column header for car name -->
+            <th style="padding:20;">Car Model</th> <!-- Column header for car model -->
+            <th style="padding:20;">Image</th> <!-- Column header for car image -->
+            <th style="padding:20;">Capacity</th> <!-- Column header for car capacity -->
+            <th style="padding:20;">Pincode</th> <!-- Column header for pincode -->
+            <th style="padding:20;">Address</th> <!-- Column header for address -->
+            <th style="padding:20;">Action</th> <!-- Column header for actions -->
+        </tr>
+        {% for vehicle in vehicle_list %} <!-- Loop through each vehicle in the vehicle list -->
+        <tr>
+            <td>{{ vehicle.car_name }}</td> <!-- Display car name -->
+            <td>{{ vehicle.car_model }}</td> <!-- Display car model -->
+            <td>
+                {% if vehicle.image %} <!-- Check if the vehicle has an image -->
+                    <img src="{{ vehicle.image.url }}" alt="{{ vehicle.car_name }}" width="100"> <!-- Display car image -->
+                {% else %}
+                    No Image <!-- Display "No Image" if there is no image -->
+                {% endif %}
+            </td>
+            <td>{{ vehicle.capacity }} Seats</td> <!-- Display car capacity with "Seats" suffix -->
+            <td>{{ vehicle.area.pincode }}</td> <!-- Display pincode -->
+            <td>{{ vehicle.area.city }}</td> <!-- Display city -->
+            <td>
+                <form action="/car_dealer_portal/delete/" method="post"> <!-- Form to delete the vehicle -->
+                    {% csrf_token %} <!-- CSRF token for security -->
+                    <input type="hidden" name="id" value="{{ vehicle.id }}"> <!-- Hidden input to store the vehicle ID -->
+                    <input class="w3-btn w3-red" type="submit" value="Delete"> <!-- Submit button to delete the vehicle -->
+                </form>
+            </td>
+        </tr>
+        {% endfor %} <!-- End of for loop -->
+    </table>
+</div>
+{% endblock %} <!-- End of content block -->

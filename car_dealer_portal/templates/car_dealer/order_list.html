@@ -1,0 +1,43 @@
+{% extends 'car_dealer/base.html' %} <!-- Extends the base template for the car dealer portal -->
+{% block content %} <!-- Begins the content block to override base content -->
+<div class="w3-bar w3-black w3-large">
+  <div class="w3-bar-item w3-left w3-black">Car Dealer Portal: {{user.username}}</div> <!-- Displays the username of the logged-in car dealer -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/logout/">Logout</a> <!-- Logout button -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/auth/">Home</a> <!-- Home link -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/order_list/">Orders</a> <!-- Orders link -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/manage_vehicles/">Vehicles</a> <!-- Manage vehicles link -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/history/">Earnings</a> <!-- Earnings link -->
+</div>
+
+<h3 class="w3-center" style="padding-top:30"><b>Vehicle's Order List</b></h3> <!-- Header for vehicle's order list section -->
+<div style="padding:18">
+<table class="w3-table w3-striped w3-center"> <!-- Table for displaying vehicle orders -->
+
+  <tr>
+    <th style="padding:20">Name </th> <!-- Column header for vehicle name -->
+    <th style="padding:20">Color</th> <!-- Column header for vehicle color -->
+    <th style="padding:20">Rental Amount </th> <!-- Column header for rental amount -->
+    <th style="padding:20">Days </th> <!-- Column header for number of days rented -->
+    <th style="padding:20">Action</th> <!-- Column header for actions -->
+  </tr>
+
+  {% for order in order_list %} <!-- Loop through each order in the order list -->
+
+  <tr>
+    <td>{{order.vehicle.car_name}}</td> <!-- Display vehicle name -->
+    <td>{{order.vehicle.color}}</td> <!-- Display vehicle color -->
+    <td>${{order.rent}}</td> <!-- Display rental amount -->
+    <td>{{order.days}}</td> <!-- Display number of days rented -->
+    <td>
+      <form action="/car_dealer_portal/complete/" method="post"> <!-- Form to mark the order as complete -->
+        {% csrf_token %} <!-- CSRF token for security -->
+        <input type="hidden" name="id" value="{{order.id}}"> <!-- Hidden input to store the order ID -->
+        <input class="w3-btn w3-indigo" type="submit" value="Complete"> <!-- Submit button to complete the order -->
+      </form>
+    </td>
+  </tr>
+
+  {% endfor %} <!-- End of for loop -->
+</table>
+</div>
+{% endblock %} <!-- End of content block -->

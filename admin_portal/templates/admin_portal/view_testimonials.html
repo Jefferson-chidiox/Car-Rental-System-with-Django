@@ -1,0 +1,22 @@
+{% extends "admin_portal/base.html" %}
+
+
+{% block content %}
+<head>
+    <title>View Testimonials</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">View Testimonials</h1>
+        <ul class="list-group">
+            {% for testimonial in testimonials %}
+            <li class="list-group-item">
+                <p>{{ testimonial.text }}</p>
+                <p><small>By {% if testimonial.user %}{{ testimonial.user.username }}{% else %}Anonymous{% endif %} on {{ testimonial.date }}</small></p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+{% endblock %}

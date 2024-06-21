@@ -1,0 +1,39 @@
+{% extends 'car_dealer/base.html' %} <!-- Extends the base template for the car dealer portal -->
+{% block content %} <!-- Begins the content block to override base content -->
+<div class="w3-bar w3-black w3-large">
+  <div class="w3-bar-item w3-left w3-black">Car Dealer Portal: {{user.username}}</div> <!-- Displays the username of the logged-in car dealer -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/logout/">Logout</a> <!-- Logout button -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right " href="/car_dealer_portal/auth/">Home</a> <!-- Home link -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/order_list/">Orders</a> <!-- Orders link -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/manage_vehicles/">Vehicles</a> <!-- Manage vehicles link -->
+  <div class="w3-bar-item w3-black w3-right" href="/car_dealer_portal/history/">Earnings : ${{wallet}}</div> <!-- Displays the earnings of the car dealer -->
+</div>
+<h3 class="w3-center" style="padding-top:30"><b>History</b></h3> <!-- Header for history section -->
+<div style="padding:18">
+<table class="w3-table w3-striped w3-center"> <!-- Table for displaying order history -->
+
+  <tr>
+    <th>Name </th> <!-- Column header for vehicle name -->
+    <th>Rent </th> <!-- Column header for rent amount -->
+    <th>Days </th> <!-- Column header for number of days rented -->
+    <th>Seat</th> <!-- Column header for vehicle seat capacity -->
+    <th>
+    </th>
+  </tr>
+  {% for order in order_list %} <!-- Loop through each order in the order list -->
+  <tr>
+    <td>{{order.vehicle.car_name}}</td> <!-- Display vehicle name -->
+    <td>${{order.rent}}</td> <!-- Display rent amount -->
+    <td>{{order.days}}</td> <!-- Display number of days rented -->
+    <td>{{order.vehicle.capacity}}</td> <!-- Display vehicle seat capacity -->
+    <td>
+      <form action = "/car_dealer_portal/complete/" method="post"> <!-- Form to mark the order as complete -->
+        {% csrf_token %} <!-- CSRF token for security -->
+      </form>
+    </td>
+  </tr>
+  {% endfor %} <!-- End of for loop -->
+</table>
+</div>
+
+{% endblock %} <!-- End of content block -->

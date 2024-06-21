@@ -1,0 +1,27 @@
+{% extends 'customer/base.html' %}
+
+{% block content %}
+
+{% if form.errors %}
+  <!-- Display error messages if form has errors -->
+{% endif %}
+
+<div class="w3-display-container" style="height:500px;">
+  <div class="w3-display-middle">
+    <form class="w3-container" action="/customer_portal/auth/" method="POST">
+      {% csrf_token %}
+      <!-- Input fields for username and password -->
+      <label>Username :</label> <input class="w3-input" type="text" name="username"><br><br>
+      <label>Password :</label> <input class="w3-input" type="password" name="password"><br><br>
+      <!-- Submit button for login -->
+      <input class="w3-btn w3-green" type="submit" value="Login">
+    </form><br><br>
+    <div class="w3-container">
+      <!-- Links to register as a customer and to go back to the home page -->
+      <a class="w3-btn w3-red" href="/customer_portal/register/">Register as Customer</a>
+      <a class="w3-btn w3-teal" href="/">Home</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

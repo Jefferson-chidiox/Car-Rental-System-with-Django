@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Dealer Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Admin Login</h1>
+        <form method="post" action="{% url 'admin_login' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      <br>
+      <form action="/admin_portal/register/" method="POST">
+        {% csrf_token %} {# Django security token for CSRF protection #}
+        <input class="w3-red" type="submit" value=" New Admin? Register here.">
+      </form>
+
+      <form action="/home/home/" method="POST">
+        {% csrf_token %} {# Django security token for CSRF protection #}
+        <input class="w3-red" type="submit" value="Return Home">
+      </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{% load static %}  {# Load Django's static file management tags #}
+
+<html>
+<head>
+  <title>Car Rental System</title>  {# Set the title of the webpage #}
+  <meta name="viewport" content="width=device-width, initial-scale=1"> {# Make the page responsive #}
+  <link rel="stylesheet" href="{% static 'css/w3.css' %}">  {# Link external stylesheet (W3.CSS) #}
+</head>
+
+<body>
+  <div class="w3-container w3-teal"> {# Container with teal background #}
+    <h1 class="w3-center">Fast Cars Rentals</h1> {# Main heading, centered #}
+  </div>
+
+  {% block content %} {# Define a block named "content" #}
+  {% endblock %}  {# End the "content" block #}
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% extends 'customer/base.html' %} <!-- Extends the base template for the customer portal -->
+{% block content %} <!-- Begins the content block to override base content -->
+<div class="w3-bar w3-large w3-black">
+  <div class="w3-bar-item w3-left w3-black">Customer Portal:
+    {% if user.is_authenticated %} <!-- Checks if the user is logged in -->
+      {{ user.username }} <!-- Displays the username if logged in -->
+    {% else %}
+      Guest <!-- Displays 'Guest' if the user is not logged in -->
+    {% endif %}
+  </div>
+
+  {% if user.is_authenticated %} <!-- Checks if the user is logged in -->
+    <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/logout/">Logout</a> <!-- Logout button for authenticated users -->
+    <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/manage/">Manage</a> <!-- Manage account link for authenticated users -->
+    <a class="w3-bar-item w3-btn w3-teal w3-left" href="/customer_portal/index/">Home</a> <!-- Home link for authenticated users -->
+
+  {% else %}
+    <a class="w3-bar-item w3-btn w3-teal w3-left" href="/">Home</a> <!-- Home link for non-authenticated users -->
+  {% endif %}
+
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/search/">Search Cars</a> <!-- Search cars link, accessible to all users -->
+
+</div>
+<div class="w3-display-container" style="height:300px;"> <!-- Container for search form, centered vertically and horizontally -->
+  <div class="w3-display-middle"> <!-- Centers the form in the middle of the container -->
+
+<form class="w3-container" action="/customer_portal/search_results/" method="post"> <!-- Search form with POST method -->
+  {% csrf_token %} <!-- CSRF token for security -->
+  <br><br>
+  <br><br>
+  <br><br>
+  <br><br>
+  <br><br>
+  <br><br>
+  <label>Enter City Name:</label> <input class="w3-input" type="text" name="city" placeholder="Asaba or Nnewi"><br><br> <!-- Input for city name -->
+  <label>Vehicle Name:</label> <input class="w3-input" type="text" name="vehicle_name" placeholder="optional"><br><br> <!-- Input for vehicle name (optional) -->
+  <label>Car Model:</label> <input class="w3-input" type="text" name="car_model" placeholder="optional"><br><br> <!-- Input for car model (optional) -->
+  <label>Capacity (Seats):</label>
+  <select class="w3-input" name="capacity"> <!-- Dropdown for selecting car seat capacity -->
+    <option value="">Any</option> <!-- Default option for any capacity -->
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    </select><br><br>
+  <input class="w3-btn w3-green" type="submit" value="Search Car"> <!-- Submit button for the form -->
+</form>
+
+</div>
+</div>
+
+{% endblock %} <!-- End of content block -->

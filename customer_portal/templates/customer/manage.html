@@ -1,0 +1,66 @@
+{% extends 'customer/base.html' %}
+{% block content %}
+<div class="w3-bar w3-large w3-black">
+  <!-- Displaying the username in the customer portal -->
+  <div class="w3-bar-item w3-left w3-black">Customer Portal: {{user.username}}</div>
+  <!-- Logout button -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/logout/">Logout</a>
+  <!-- Link to search cars -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/search/">Search Cars</a>
+  <!-- Link to home page -->
+  <a class="w3-ber-item w3-btn w3-teal w3-left" href="/customer_portal/index/">Home</a>
+</div>
+
+<h3 class="w3-center" style="padding-top:20px;"><b>Your Orders</b></h3>
+
+<div class="w3-center" style="padding:50px;">
+    <!-- Table to display order details -->
+    <table class="w3-table w3-striped w3-center">
+        <tr>
+            <th>Car Name</th>
+            <th>Car Model</th>
+            <th>Image</th>
+            <th>Days</th>
+            <th>Rent</th>
+            <th>Capacity</th>
+            <th>Description</th>
+            <th>Pincode</th>
+            <th>Action</th>
+        </tr>
+        {% for order in od %}
+        <tr>
+            <td>{{ order.vehicle.car_name }}</td>
+            <td>{{ order.vehicle.car_model }}</td>
+            <td>
+                {% if order.vehicle.image %}
+                    <img src="{{ order.vehicle.image.url }}" alt="{{ order.vehicle.car_name }}" width="100">
+                {% else %}
+                    No Image
+                {% endif %}
+            </td>
+            <td>{{ order.days }}</td>
+            <td>${{ order.rent }}</td>
+            <td>{{ order.vehicle.capacity }} Seats</td>
+            <td>{{ order.vehicle.description }}</td>
+            <td>{{ order.vehicle.area.pincode }}</td>
+            <td>
+              <!-- Form to delete an order -->
+              <form action="/customer_portal/delete/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ order.id }}">
+                <input class="w3-btn w3-red" type="submit" value="Delete">
+              </form>
+              <!--
+              <form action="/customer_portal/update/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ order.id }}">
+                <input class="w3-btn w3-indigo" type="submit" value="Update">
+              </form>
+              -->
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

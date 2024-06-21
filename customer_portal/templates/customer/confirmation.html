@@ -1,0 +1,55 @@
+
+{% extends 'customer/base.html' %}
+{% block content %}
+
+<div class="w3-bar w3-large w3-black">
+  <!-- Displaying the username in the customer portal -->
+  <div class="w3-bar-item w3-left w3-black">Customer Portal: {{user.username}}</div>
+  <!-- Logout button -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/logout/">Logout</a>
+  <!-- Manage account button -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/manage/">Manage</a>
+  <!-- Search cars button -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/search/">Search Cars</a>
+</div>
+
+<div class="w3-container w3-center" style="padding:100px">
+  <!-- Displaying the selected car name -->
+  <b>Car: {{vehicle.car_name}}</b>
+  <form class="w3-container" action="/customer_portal/confirmed/" method="post" onsubmit="return validateForm()">
+    <!-- CSRF token for security -->
+    {% csrf_token %}
+    <!-- Displaying the price per day of the car rental -->
+    <b>Price: ${{cost_per_day}} per day</b><br><br>
+    <!-- Input for the number of rental days -->
+    <label>How many days?</label>
+    <input type="text" placeholder="2" name="days" id="daysInput"><br><br>
+
+    <!-- Error message to be displayed if days input is empty -->
+    <div id="error-message" style="color: red; display: none;">Please enter the number of days.</div>
+
+    <!-- Button to confirm the order -->
+    <input class="w3-btn w3-teal" type="submit" value="Confirm My Order"><br><br>
+    <!-- Hidden input to include the vehicle ID in the form submission -->
+    <input type="hidden" value="{{vehicle.id}}" name="id">
+    <br><br>
+  </form>
+</div>
+
+<script>
+  function validateForm() {
+    const daysInput = document.getElementById("daysInput"); // Get the days input element
+    const errorMessage = document.getElementById("error-message"); // Get the error message element
+
+    // Check if the days input is empty
+    if (daysInput.value.trim() === "") {
+      errorMessage.style.display = "block"; // Show the error message
+      return false; // Prevent form submission
+    } else {
+      errorMessage.style.display = "none"; // Hide the error message
+      return true; // Allow form submission
+    }
+  }
+</script>
+
+{% endblock %}

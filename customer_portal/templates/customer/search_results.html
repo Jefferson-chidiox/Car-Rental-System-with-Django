@@ -1,0 +1,67 @@
+{% extends 'customer/base.html' %}
+{% block content %}
+<div class="w3-bar w3-large w3-black">
+  <div class="w3-bar-item w3-left w3-black">Customer Portal:
+    {% if user.is_authenticated %}
+      {{ user.username }}
+    {% else %}
+      Guest
+    {% endif %}
+  </div>
+
+  {% if user.is_authenticated %}
+    <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/logout/">Logout</a>
+    <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/manage/">Manage</a>
+    <a class="w3-ber-item w3-btn w3-teal w3-left" href="/customer_portal/index/">Home</a>
+
+  {% else %}
+    <a class="w3-ber-item w3-btn w3-teal w3-left" href="/">Home</a>
+  {% endif %}
+
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/search/">Search Cars</a>
+
+</div>
+
+<h3 class="w3-center" style="padding-top:30"><b>Search Results</b></h3>
+
+<div class="w3-center" style="padding:50px;">
+    <table class="w3-table w3-striped w3-center w3-large">
+        <tr>
+            <th style="padding:15">Vehicle Name</th>
+            <th style="padding:15">Car Model</th>
+            <th style="padding:15">Image</th>
+            <th style="padding:15">Capacity</th>
+            <th style="padding:15">Description</th>
+            <th style="padding:15">Pincode</th>
+            <th style="padding:15;"></th>
+        </tr>
+        {% for vehicle in request.session.vehicles_list %}
+        <tr>
+            <td>{{ vehicle.name }}</td>
+            <td>{{ vehicle.car_model }}</td>
+            <td>
+                {% if vehicle.image_url %}
+                    <img src="{{ vehicle.image.url }}" alt="{{ vehicle.name }}" width="100">
+                {% else %}
+                    No Image
+                {% endif %}
+            </td>
+            <td>{{ vehicle.capacity }}</td>
+            <td>{{ vehicle.description }}</td>
+            <td>{{ vehicle.pincode }}</td>
+            <td>
+                {% if user.is_authenticated %}
+                    <form action="/customer_portal/rent/" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ vehicle.id }}">
+                        <input class="w3-btn w3-green" type="submit" value="Rent">
+                    </form>
+                {% else %}
+                    <a href="/home/index/">Login to rent</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

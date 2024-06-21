@@ -1,0 +1,79 @@
+{% extends 'home/base.html' %} {# Inherit from the base template #}
+{% block content %} {# Start the content block for this specific page #}
+{% load static %} {# Load Django's static file management tags #}
+
+{# Navigation Bar #}
+<div class="w3-bar w3-large w3-black">
+  <div class="w3-bar-item w3-left w3-black">Customer Portal</div> {# Label for the portal #}
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/home/index/">Login</a> {# Login link #}
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/search/">Search Cars</a> {# Search link #}
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/submit_testimonial/">Give Testimonial</a> {# Testimonial #}
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/submit_query/">Contact Us</a> {# Contact us#}
+</div>
+
+{# Welcome Message and Image #}
+<div class="w3-row-padding w3-margin-top"> {# Container for the row #}
+  <div class="w3-container w3-center w3-large" style="padding:20px;">Welcome Traveller, You shall drive the car of your dreams!</div> {# Welcome text #}
+
+  <div class="w3-display-container w3-center" style="height:500px;padding:10px; margin-bottom:70px;"> {# Image container #}
+    <img src="{% static "images/car-pics.jpg" %}"> {# Car image #}
+    <div class="w3-display-middle"> {# Overlay for the button #}
+      <a class="w3-btn w3-red w3-xlarge" href="/customer_portal/search/"><b>Search for Rental Cars</b></a> {# Search button #}
+    </div>
+  </div>
+</div>
+
+{# Orders and Available Cars Sections #}
+<div class="w3-row-padding w3-margin-top"> {# Container for the row #}
+
+  {# Your Orders Section #}
+  <div class="w3-third"> {# 1/3 width column #}
+    <div class="w3-card w3-white w3-margin-bottom"> {# Card container #}
+      <header class="w3-container w3-teal">
+        <h3>Your Orders</h3>
+      </header>
+      <div class="w3-container w3-center">
+        <p>Please <a href="/home/index/">Sign In</a> to view your orders.</p> {# Login prompt #}
+      </div>
+    </div>
+  </div>
+
+  {# Available Cars Section #}
+  <div class="w3-twothird"> {# 2/3 width column #}
+    <div class="w3-card w3-white w3-margin-bottom"> {# Card container #}
+      <header class="w3-container w3-teal">
+        <h3>Available Cars</h3>
+      </header>
+      <div class="w3-container">
+        {% if vehicles %} {# Check if there are vehicles to display #}
+          <div class="w3-row-padding">
+            {% for vehicle in vehicles %} {# Loop through each available vehicle #}
+              <div class="w3-third w3-margin-bottom">
+                <div class="w3-card">
+                  {% if vehicle.image %} {# Display vehicle image if available #}
+                    <img src="{{ vehicle.image.url }}" alt="{{ vehicle.name }}" style="width:100%">
+                  {% else %} {# Display placeholder image if not #}
+                    <img src="{% static 'images/placeholder_car.jpg' %}" alt="Placeholder" style="width:100%">
+                  {% endif %}
+                  <div class="w3-container">
+                    <h4>{{ vehicle.car_name }} ({{ vehicle.car_model }})</h4> {# Car name and model #}
+                    <p>{{ vehicle.description }}</p> {# Car description #}
+                    <form action="/customer_portal/rent/" method="post"> {# Rent form #}
+                      {% csrf_token %}
+                      <input type="hidden" name="id" value="{{ vehicle.id }}"> {# Hidden input for vehicle ID #}
+                      <a href="home/index/">Sign in First</a> {# Login prompt (should be a button) #}
+                    </form>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %} {# Display message if no cars are available #}
+          <p>No available cars found.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

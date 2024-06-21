@@ -1,0 +1,54 @@
+{% extends "admin_portal/base.html/" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<head>
+    <title>View Users</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">View Users</h1>
+        <h2>Car Dealers</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Mobile</th>
+                    <th>Wallet</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dealer in car_dealers %}
+                <tr>
+                    <td>{{ dealer.car_dealer.username }}</td>
+                    <td>{{ dealer.mobile }}</td>
+                    <td>${{ dealer.wallet }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h2>Customers</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Mobile</th>
+                    <th>Area</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.user.username }}</td>
+                    <td>{{ customer.mobile }}</td>
+                    <td>{{ customer.area }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+{% endblock %}

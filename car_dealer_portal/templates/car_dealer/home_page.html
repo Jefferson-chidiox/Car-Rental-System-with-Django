@@ -1,0 +1,68 @@
+{% extends 'car_dealer/base.html' %} <!-- Extends the base template for the car dealer portal -->
+{% block content %} <!-- Begins the content block to override base content -->
+{% load static %} <!-- Loads the static files template tag -->
+
+<script>
+  // JavaScript for client-side validation
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form'); // Select the form element
+    form.addEventListener('submit', function(event) {
+      // Get the values of the form fields
+      const carName = document.querySelector('input[name="car_name"]').value;
+      const carModel = document.querySelector('input[name="car_model"]').value;
+      const city = document.querySelector('input[name="city"]').value;
+      const pincode = document.querySelector('input[name="pincode"]').value;
+      const description = document.querySelector('input[name="description"]').value;
+      const capacity = document.querySelector('input[name="capacity"]').value;
+      const image = document.querySelector('input[name="image"]').value;
+
+      // Check if any field is empty
+      if (!carName || !carModel || !city || !pincode || !description || !capacity || !image) {
+        alert('Please fill in all fields.'); // Show alert if any field is empty
+        event.preventDefault(); // Prevent form submission
+      }
+    });
+  });
+</script>
+
+<div class="w3-bar w3-large w3-black">
+  <div class="w3-bar-item w3-left w3-black">Car Dealer Portal: {{user.username}}</div> <!-- Displays the username of the logged-in admin -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/logout/">Logout</a> <!-- Logout button -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/order_list/">Orders</a> <!-- Orders link -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/manage_vehicles/">Vehicles</a> <!-- Manage vehicles link -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/car_dealer_portal/history/">Earnings</a> <!-- Earnings link -->
+</div>
+
+{% if messages %} <!-- Check if there are any messages to display -->
+  <div class="w3-panel w3-red">
+    {% for message in messages %} <!-- Loop through each message -->
+      <p>{{ message }}</p> <!-- Display the message -->
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="w3-display-container" style="height:800px;"> <!-- Container for the form, with fixed height -->
+  <div class="w3-display-left" style="padding-left: 200px;"> <!-- Aligns the form to the left with padding -->
+
+    <h3 class="w3-container w3-bar w3-black w3-large" style="padding:8px"><center>Post Vehicles<center></h3> <!-- Header for the form -->
+
+    <form class="w3-container" action="/car_dealer_portal/add_vehicle/" method="post" enctype="multipart/form-data"> <!-- Form for adding a vehicle -->
+      {% csrf_token %} <!-- CSRF token for security -->
+      <label>Car Name :</label> <input class="w2-input" type="text" name="car_name"><br><br> <!-- Input for car name -->
+      <label>Car Model :</label> <input class="w2-input" type="text" name="car_model"><br><br> <!-- Input for car model -->
+      <label>City :</label> <input class="w2-input" type="text" name="city"><br><br> <!-- Input for city -->
+      <label>Pincode :</label> <input class="w2-input" type="text" name="pincode"><br><br> <!-- Input for pincode -->
+      <label>Description :</label> <input class="w2-input" type="text" name="description"><br><br> <!-- Input for description -->
+      <label>Capacity (Seats) :</label> <input class="w2-input" type="number" name="capacity"><br><br> <!-- Input for capacity (seats) -->
+      <label>Image :</label> <input class="w2-input" type="file" name="image"><br><br> <!-- Input for image -->
+      <input class="w3-btn w3-green" type="submit" value="Add Vehicle"><br><br> <!-- Submit button to add the vehicle -->
+    </form>
+  </div>
+</div>
+
+<div class="w3-display-right"> <!-- Aligns the image to the right -->
+  <img src="{% static "images/car.jpeg" %}" width="400px"></img> <!-- Displays an image from static files -->
+</div>
+
+{% endblock %} <!-- End of content block -->
+

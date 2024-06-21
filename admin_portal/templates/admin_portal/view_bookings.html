@@ -1,0 +1,33 @@
+{% extends "admin_portal/base.html/" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<head>
+    <title>View Bookings</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">View Bookings</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Vehicle</th>
+                    <th>Days</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.user.username }}</td>
+                    <td>{{ booking.vehicle.car_name }}</td>
+                    <td>{{ booking.days }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+{% endblock %}

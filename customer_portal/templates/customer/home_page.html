@@ -1,0 +1,102 @@
+{% extends 'customer/base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="w3-bar w3-large w3-black">
+  <!-- Displaying the username in the customer portal -->
+  <div class="w3-bar-item w3-left w3-black">Customer Portal: {{user.username}}</div>
+  <!-- Logout button -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/logout/">Logout</a>
+  <!-- Manage account button -->
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/manage/">Manage</a>
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/submit_testimonial/">Give Testimonial</a> {# Testimonial #}
+  <a class="w3-bar-item w3-btn w3-teal w3-right" href="/customer_portal/submit_query/">Contact Us</a> {# Contact us#}
+</div>
+
+<div class="w3-container w3-center w3-large" style="padding:20px;">
+  <!-- Welcome message -->
+  Welcome Traveller, You shall drive the car of your dreams!
+</div>
+
+  <div class="w3-display-container w3-center" style="height:500px;padding:10px; margin-bottom:70px;">  <!-- Image of rental cars -->
+  <img src="{% static "images/car-pics.jpg" %}">
+  <div class="w3-display-middle">
+    <!-- Button to search for rental cars -->
+    <a class="w3-btn w3-red w3-xlarge" href="/customer_portal/search/"><b>Search for Rental Cars</b></a>
+  </div>
+</div>
+
+<div class="w3-row-padding w3-margin-top">
+  <div class="w3-third">
+    <div class="w3-card w3-white w3-margin-bottom">
+      <header class="w3-container w3-teal">
+        <!-- Header for displaying user's orders -->
+        <h3>Your Orders</h3>
+      </header>
+      <div class="w3-container">
+        {% if orders %}
+          <ul class="w3-ul">
+            <!-- Listing each order -->
+            {% for order in orders %}
+              <li>
+                <!-- Displaying car name, model, image if available, days rented, and rent price -->
+                <b>{{ order.vehicle.car_name }}</b> ({{ order.vehicle.car_model }})<br>
+                {% if order.vehicle.image %}
+                  <img src="{{ order.vehicle.image.url }}" alt="{{ order.vehicle.car_name }}" width="100">
+                {% else %}
+                  No Image
+                {% endif %}
+                Days: {{ order.days }} | Rent: ${{ order.rent }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <!-- Message displayed if no orders are found -->
+          <p>You have no current orders.</p>
+        {% endif %}
+      </div>
+      <footer class="w3-container w3-teal">
+        <!-- Footer with link to manage orders -->
+        <a href="/customer_portal/manage/" class="w3-btn w3-white">Manage Orders</a>
+      </footer>
+    </div>
+  </div>
+
+  <div class="w3-twothird">
+    <div class="w3-card w3-white w3-margin-bottom">
+      <header class="w3-container w3-teal">
+        <!-- Header for displaying available cars -->
+        <h3>Available Cars</h3>
+      </header>
+      <div class="w3-container">
+        {% if vehicles %}
+          <div class="w3-row-padding">
+            <!-- Loop through available vehicles -->
+            {% for vehicle in vehicles %}
+              <div class="w3-third w3-margin-bottom">
+                <div class="w3-card">
+                  <!-- Display vehicle image, name, model, description, and rent form -->
+                  <img src="{{ vehicle.image.url }}" alt="{{ vehicle.name }}" style="width:100%">
+                  <div class="w3-container">
+                    <h4>{{ vehicle.car_name }} ({{ vehicle.car_model }})</h4>
+                    <p>{{ vehicle.description }}</p>
+                    <form action="/customer_portal/rent/" method="post">
+                      {% csrf_token %}
+                      <input type="hidden" name="id" value="{{ vehicle.id }}">
+                      <button class="w3-button w3-green">Rent</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <!-- Message displayed if no available cars are found -->
+          <p>No available cars found. Search to find available cars.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
